@@ -18,3 +18,5 @@ openapi.json
 .idea/
 
 *.log
+
+uploads/
