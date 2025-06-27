@@ -1,0 +1,22 @@
+__pycache__/
+
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+.env
+# .env.*
+
+__pydantic__/ 
+
+docs.json
+openapi.json
+
+.vscode/
+.idea/
+
+*.log
+
+uploads/
