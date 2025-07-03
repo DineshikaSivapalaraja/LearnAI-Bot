@@ -101,7 +101,7 @@ html {
 }
 
 .upload-btn:disabled {
-  background: #bdc3c7;
+  background: #19191a;
   cursor: not-allowed;
 }
 
@@ -145,7 +145,8 @@ html {
 }
 
 .message.user {
-  background: #3498db;
+  background:#667eea ; 
+   /* #3498db; */
   color: white;
   margin-left: auto;
   text-align: right;
@@ -205,7 +206,7 @@ html {
 }
 
 .ask-btn:disabled {
-  background: #bdc3c7;
+  background: #19191a;
   cursor: not-allowed;
 }
 

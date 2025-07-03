@@ -6,6 +6,7 @@ function App() {
   const [question, setQuestion] = useState('')
   const [file, setFile] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isAsking, setIsAsking] = useState(false)        
   const [uploadStatus, setUploadStatus] = useState('')
 
   // handle file upload
@@ -38,7 +39,7 @@ function App() {
   const handleAskQuestion = async () => {
     if (!question.trim()) return
 
-    setIsLoading(true)
+    setIsAsking(true)
     // add user question to messages
     const userMessage = { type: 'user', content: question }
     setMessages(prev => [...prev, userMessage])
@@ -51,6 +52,13 @@ function App() {
         },
         body: JSON.stringify({ question }),
       })
+
+      // check if response is successful
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.detail || 'Failed to get answer')
+      }
+
       const result = await response.json()
       
       // add AI response to messages
@@ -63,7 +71,7 @@ function App() {
     }
 
     setQuestion('')
-    setIsLoading(false)
+    setIsAsking(false)
   }
 
   return (
@@ -119,7 +127,7 @@ function App() {
               </div>
             </div>
           ))}
-          {isLoading && (
+          {isAsking && (
             <div className="message ai">
               <div className="message-content">
                 <strong>AI:</strong> <span>Thinking...</span>
@@ -136,15 +144,15 @@ function App() {
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Ask an question about your PDF..."
             onKeyPress={(e) => e.key === 'Enter' && handleAskQuestion()}
-            disabled={isLoading}
+            disabled={isAsking}
             className="question-input"
           />
           <button 
             onClick={handleAskQuestion}
-            disabled={!question.trim() || isLoading}
+            disabled={!question.trim() || isAsking}
             className="ask-btn"
           >
-            Send
+            {isAsking ? 'Sending...' : 'Send'} 
           </button>
         </div>
       </div>
