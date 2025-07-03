@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
+
 function App() {
   const [messages, setMessages] = useState([])
   const [question, setQuestion] = useState('')
@@ -21,7 +23,7 @@ function App() {
     formData.append('file', file)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/upload-file`, {
+      const response = await fetch(`${API_URL}/upload-file`, {
         method: 'POST',
         body: formData,
       })
@@ -45,7 +47,7 @@ function App() {
     setMessages(prev => [...prev, userMessage])
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/ask`, {
+      const response = await fetch(`${API_URL}/ask`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
