@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
 from langchain_community.document_loaders import PyPDFLoader
@@ -10,6 +11,15 @@ from transformers import pipeline, AutoTokenizer
 
 load_dotenv()
 app = FastAPI()
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   #"http://localhost:5173"
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 #store documents globally
 vector_store = None
@@ -78,7 +88,7 @@ async def ask_question(req: QuestionRequest):
     #2. load local text generation model to answer questions
     # Purpose: Initialize the AI model that will generate natural language answers
     # Why? Need a language model to understand context and generate human-like responses
-    model_name =  "google/flan-t5-base"  #  "google/flan-t5-small" , "distilgpt2" also possible
+    model_name =  "google/flan-t5-small"  #  "google/flan-t5-base" , "distilgpt2" also possible
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     generator = pipeline(
         "text2text-generation",   # flan-t5-small is not use text-generation
